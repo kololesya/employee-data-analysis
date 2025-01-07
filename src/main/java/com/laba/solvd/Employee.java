@@ -1,9 +1,5 @@
 package com.laba.solvd;
 
-import java.util.*;
-import java.util.function.Function;
-import java.util.stream.Collectors;
-
 class Employee {
     private int id;
     private String name;
@@ -11,7 +7,7 @@ class Employee {
     private String department;
     private double salary;
 
-    // Конструктор, геттеры и сеттеры
+    // Constructor, getters and setters
     public Employee(int id, String name, int yearOfBirth, String department, double salary) {
         this.id = id;
         this.name = name;

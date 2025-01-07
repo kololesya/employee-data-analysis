@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 
 public class EmployeeManager {
 
-    // Метод для чтения сотрудников из Excel файла (с использованием параллельных потоков)
+    // Method for reading employees from an Excel file (using parallel streams)
     public static List<Employee> readEmployeesFromFile(String filePath) {
         List<Employee> employees = new ArrayList<>();
 
@@ -20,11 +20,11 @@ public class EmployeeManager {
 
             Sheet sheet = workbook.getSheetAt(0);
 
-            // Пропускаем заголовок
+            // Skip the header
             for (int i = 1; i < sheet.getPhysicalNumberOfRows(); i++) {
                 Row row = sheet.getRow(i);
 
-                // Извлекаем данные из строки
+                // Extract data from the row
                 int id = (int) row.getCell(0).getNumericCellValue();
                 String name = row.getCell(1).getStringCellValue();
                 int yearOfBirth = (int) row.getCell(2).getNumericCellValue();
@@ -41,30 +41,30 @@ public class EmployeeManager {
         return employees;
     }
 
-    // Функция для получения имени и отдела сотрудника
+    // Function to get the employee's name and department
     public static Function<Employee, String> nameAndDepartment = employee ->
             employee.getName() + " - " + employee.getDepartment();
 
-    // Получение информации о сотрудниках в виде списка строк (с использованием параллельных потоков)
+    // Retrieve employee information as a list of strings (using parallel streams)
     public static List<String> getEmployeeInfo(List<Employee> employees) {
-        return employees.parallelStream() // Параллельный поток
+        return employees.parallelStream() // Parallel stream
                 .map(nameAndDepartment)
                 .collect(Collectors.toList());
     }
 
-    // Фильтрация сотрудников, чей возраст больше заданного (с учетом текущего года)
+    // Filter employees whose age is greater than the specified value (considering the current year)
     public static List<Employee> filterEmployeesByAge(List<Employee> employees, int minAge) {
-        // Получаем текущий год
+        // Get the current year
         int currentYear = LocalDate.now().getYear();
 
-        return employees.parallelStream() // Параллельный поток
-                .filter(e -> (currentYear - e.getYearOfBirth()) >= minAge) // Фильтрация по возрасту
+        return employees.parallelStream() // Parallel stream
+                .filter(e -> (currentYear - e.getYearOfBirth()) >= minAge) // Filter by age
                 .collect(Collectors.toList());
     }
 
-    // Вычисление средней зарплаты (с использованием параллельных потоков)
+    // Calculate average salary (using parallel streams)
     public static double calculateAverageSalary(List<Employee> employees) {
-        return employees.parallelStream() // Параллельный поток
+        return employees.parallelStream() // Parallel stream
                 .mapToDouble(Employee::getSalary)
                 .average()
                 .orElse(0.0);
